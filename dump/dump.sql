@@ -26,14 +26,14 @@ CREATE TABLE films
 (
     id  SERIAL PRIMARY KEY,
     name          VARCHAR(128)   NOT NULL,
-    releaseDate   DATE           NOT NULL,
+    release_date   DATE           NOT NULL,
     film_type_id  BIGINT         NOT NULL,
     film_genre_id BIGINT         NOT NULL,
     country_id    BIGINT         NOT NULL,
     description   VARCHAR(255)   NULL,
     duration      INT         NOT NULL,
     rating        DECIMAL(10, 2) NOT NULL,
-    imageUrl      VARCHAR(255)   NULL,
+    image_url      VARCHAR(255)   NULL,
     FOREIGN KEY (film_type_id) REFERENCES film_types (id),
     FOREIGN KEY (film_genre_id) REFERENCES film_genres (id),
     FOREIGN KEY (country_id) REFERENCES countries (id),
@@ -49,7 +49,7 @@ CREATE TABLE people
     full_name     VARCHAR(255) GENERATED ALWAYS AS (name || ' ' || surname) STORED,
     date_of_birth DATE         NOT NULL,
     description   VARCHAR(255) NULL,
-    imageUrl      VARCHAR(255) NULL
+    image_url      VARCHAR(255) NULL
 );
 
 CREATE TABLE people_film_roles
