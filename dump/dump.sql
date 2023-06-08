@@ -34,11 +34,10 @@ CREATE TABLE films
     duration      INT         NOT NULL,
     rating        DECIMAL(10, 2) NOT NULL,
     image_url      VARCHAR(255)   NULL,
-    FOREIGN KEY (film_type_id) REFERENCES film_types (id),
-    FOREIGN KEY (film_genre_id) REFERENCES film_genres (id),
-    FOREIGN KEY (country_id) REFERENCES countries (id),
 
-    PRIMARY KEY (id)
+    FOREIGN KEY (film_type_id) REFERENCES film_types (id) ON UPDATE CASCADE,
+    FOREIGN KEY (film_genre_id) REFERENCES film_genres (id) ON UPDATE CASCADE,
+    FOREIGN KEY (country_id) REFERENCES countries (id) ON UPDATE CASCADE
 );
 
 CREATE TABLE people
@@ -58,9 +57,9 @@ CREATE TABLE people_film_roles
     people_id BIGINT NOT NULL,
     film_id   BIGINT NOT NULL,
 
-    FOREIGN KEY (role_id) REFERENCES roles (id),
-    FOREIGN KEY (people_id) REFERENCES people (id),
-    FOREIGN KEY (film_id) REFERENCES films (id),
+    FOREIGN KEY (role_id) REFERENCES roles (id) ON UPDATE CASCADE,
+    FOREIGN KEY (people_id) REFERENCES people (id) ON UPDATE CASCADE,
+    FOREIGN KEY (film_id) REFERENCES films (id) ON UPDATE CASCADE,
     UNIQUE (role_id, people_id, film_id)
 );
 
