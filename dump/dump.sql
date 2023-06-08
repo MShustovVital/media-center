@@ -31,8 +31,8 @@ CREATE TABLE films
     film_genre_id BIGINT         NOT NULL,
     country_id    BIGINT         NOT NULL,
     description   VARCHAR(255)   NULL,
-    duration      INT         NOT NULL,
-    rating        DECIMAL(10, 2) NOT NULL,
+    duration      INT         NOT NULL CHECK (duration > 0),
+    rating        DECIMAL(10, 2) NOT NULL CHECK (rating between 0 AND 10),
     image_url      VARCHAR(255)   NULL,
 
     FOREIGN KEY (film_type_id) REFERENCES film_types (id) ON UPDATE CASCADE,
