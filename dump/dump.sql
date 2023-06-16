@@ -68,5 +68,4 @@ CREATE INDEX idx_rating ON films (rating);
 CREATE INDEX idx_film_type_id ON films (film_type_id);
 CREATE INDEX idx_film_genre_id ON films (film_genre_id);
 CREATE INDEX idx_country_id ON films (country_id);
-
 CREATE INDEX idx_full_name on people (full_name);
