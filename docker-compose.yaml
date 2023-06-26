@@ -1,7 +1,11 @@
 version: '3.8'
 services:
   db:
-    container_name: "studying-postgres"
+    container_name: "node1-postgres"
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: any
     image: postgres
     restart: always
     environment:
