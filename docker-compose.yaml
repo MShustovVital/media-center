@@ -1,11 +1,10 @@
 version: '3.8'
 services:
   db:
-    container_name: "node1-postgres"
     deploy:
       replicas: 3
       restart_policy:
-        condition: any
+        condition: none
     image: postgres
     restart: always
     environment:
@@ -13,9 +12,28 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - '5432:5432'
+      - '5432-5435:5432'
     volumes:
       - ./dump:/docker-entrypoint-initdb.d
+    networks:
+      - studying
+
+  admin_dashboard:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    networks:
+      - studying
+
 volumes:
   db:
     driver: local
+
+networks:
+  studying:
+    driver: bridge
