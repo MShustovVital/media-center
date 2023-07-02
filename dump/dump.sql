@@ -1,28 +1,36 @@
-CREATE TABLE film_genres
+CREATE SCHEMA private;
+CREATE ROLE super_admin;
+CREATE ROLE operator;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA private TO super_admin;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO super_admin;
+GRANT USAGE ON SCHEMA public TO operator;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO operator;
+
+CREATE TABLE public.film_genres
 (
     id  SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL
-);
+) TABLESPACE pg_global;
 
-CREATE TABLE film_types
+CREATE TABLE public.film_types
 (
     id  SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL
-);
+) TABLESPACE pg_global;
 
-CREATE TABLE roles
+CREATE TABLE public.roles
 (
     id  SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL
-);
+) TABLESPACE pg_global;
 
-CREATE TABLE countries
+CREATE TABLE public.countries
 (
     id  SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL
-);
+) TABLESPACE pg_global;
 
-CREATE TABLE films
+CREATE TABLE public.films
 (
     id  SERIAL PRIMARY KEY,
     name          VARCHAR(128)   NOT NULL,
@@ -38,9 +46,9 @@ CREATE TABLE films
     FOREIGN KEY (film_type_id) REFERENCES film_types (id) ON UPDATE CASCADE,
     FOREIGN KEY (film_genre_id) REFERENCES film_genres (id) ON UPDATE CASCADE,
     FOREIGN KEY (country_id) REFERENCES countries (id) ON UPDATE CASCADE
-);
+) TABLESPACE data;
 
-CREATE TABLE people
+CREATE TABLE public.people
 (
     id  SERIAL PRIMARY KEY,
     name          VARCHAR(64)  NOT NULL,
@@ -49,9 +57,9 @@ CREATE TABLE people
     date_of_birth DATE         NOT NULL,
     description   VARCHAR(255) NULL,
     image_url      VARCHAR(255) NULL
-);
+) TABLESPACE pg_global;
 
-CREATE TABLE people_film_roles
+CREATE TABLE public.people_film_roles
 (
     role_id   BIGINT NOT NULL,
     people_id BIGINT NOT NULL,
@@ -61,11 +69,11 @@ CREATE TABLE people_film_roles
     FOREIGN KEY (people_id) REFERENCES people (id) ON UPDATE CASCADE,
     FOREIGN KEY (film_id) REFERENCES films (id) ON UPDATE CASCADE,
     UNIQUE (role_id, people_id, film_id)
-);
+) TABLESPACE pg_global;
 
-CREATE INDEX idx_name ON films (name);
-CREATE INDEX idx_rating ON films (rating);
-CREATE INDEX idx_film_type_id ON films (film_type_id);
-CREATE INDEX idx_film_genre_id ON films (film_genre_id);
-CREATE INDEX idx_country_id ON films (country_id);
-CREATE INDEX idx_full_name on people (full_name);
+CREATE INDEX idx_films_name ON public.films (name) TABLESPACE pg_default;
+CREATE INDEX idx_films_rating ON public.films (rating) TABLESPACE pg_default;
+CREATE INDEX idx_films_film_type_id ON public.films (film_type_id) TABLESPACE pg_default;
+CREATE INDEX idx_films_film_genre_id ON public.films (film_genre_id) TABLESPACE pg_default;
+CREATE INDEX idx_films_country_id ON public.films (country_id) TABLESPACE pg_default;
+CREATE INDEX idx_people_full_name ON public.people (full_name) TABLESPACE pg_default;
