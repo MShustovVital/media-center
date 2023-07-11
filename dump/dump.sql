@@ -73,6 +73,7 @@ CREATE TABLE public.people_film_roles
 
 CREATE INDEX idx_films_name ON public.films USING GIN (to_tsvector('english', name));
 CREATE INDEX idx_films_rating ON public.films (rating);
+CREATE INDEX idx_films_duration_ration ON public.films (duration, rating);
 CREATE INDEX idx_films_film_type_id ON public.films (film_type_id);
 CREATE INDEX idx_films_film_genre_id ON public.films (film_genre_id);
 CREATE INDEX idx_films_country_id ON public.films (country_id);
