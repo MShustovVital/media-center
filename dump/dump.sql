@@ -10,25 +10,25 @@ CREATE TABLE public.film_genres
 (
     id  SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL
-) TABLESPACE pg_global;
+);
 
 CREATE TABLE public.film_types
 (
     id  SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL
-) TABLESPACE pg_global;
+);
 
 CREATE TABLE public.roles
 (
     id  SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL
-) TABLESPACE pg_global;
+);
 
 CREATE TABLE public.countries
 (
     id  SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL
-) TABLESPACE pg_global;
+);
 
 CREATE TABLE public.films
 (
@@ -46,7 +46,7 @@ CREATE TABLE public.films
     FOREIGN KEY (film_type_id) REFERENCES film_types (id) ON UPDATE CASCADE,
     FOREIGN KEY (film_genre_id) REFERENCES film_genres (id) ON UPDATE CASCADE,
     FOREIGN KEY (country_id) REFERENCES countries (id) ON UPDATE CASCADE
-) TABLESPACE data;
+);
 
 CREATE TABLE public.people
 (
@@ -57,7 +57,7 @@ CREATE TABLE public.people
     date_of_birth DATE         NOT NULL,
     description   VARCHAR(255) NULL,
     image_url      VARCHAR(255) NULL
-) TABLESPACE pg_global;
+);
 
 CREATE TABLE public.people_film_roles
 (
@@ -69,11 +69,12 @@ CREATE TABLE public.people_film_roles
     FOREIGN KEY (people_id) REFERENCES people (id) ON UPDATE CASCADE,
     FOREIGN KEY (film_id) REFERENCES films (id) ON UPDATE CASCADE,
     UNIQUE (role_id, people_id, film_id)
-) TABLESPACE pg_global;
+);
 
-CREATE INDEX idx_films_name ON public.films (name) TABLESPACE pg_default;
-CREATE INDEX idx_films_rating ON public.films (rating) TABLESPACE pg_default;
-CREATE INDEX idx_films_film_type_id ON public.films (film_type_id) TABLESPACE pg_default;
-CREATE INDEX idx_films_film_genre_id ON public.films (film_genre_id) TABLESPACE pg_default;
-CREATE INDEX idx_films_country_id ON public.films (country_id) TABLESPACE pg_default;
-CREATE INDEX idx_people_full_name ON public.people (full_name) TABLESPACE pg_default;
+CREATE INDEX idx_films_name ON public.films USING GIN (to_tsvector('english', name));
+CREATE INDEX idx_films_rating ON public.films (rating);
+CREATE INDEX idx_films_film_type_id ON public.films (film_type_id);
+CREATE INDEX idx_films_film_genre_id ON public.films (film_genre_id);
+CREATE INDEX idx_films_country_id ON public.films (country_id);
+CREATE INDEX idx_people_full_name ON public.people USING GIN(to_tsvector('english', full_name));
+
